@@ -474,9 +474,7 @@
       }
       function sendToKakao(id) {
         if (!window.Kakao) {
-          alert(
-            "카카오 스크립트가 로드되지 않았습니다. 새로고침 후 다시 시도해주세요.",
-          );
+          alert("카카오 스크립트가 로드되지 않았습니다.");
           return;
         }
 
@@ -486,7 +484,7 @@
 
         const messageText = document.getElementById(id).innerText;
 
-        // 1. 진짜로 카톡을 보내는 핵심 기능 (재사용을 위해 따로 묶어둠)
+        // 1. 카톡을 실제로 보내는 함수
         const sendMemo = () => {
           Kakao.API.request({
             url: "/v2/api/talk/memo/default/send",
@@ -501,25 +499,50 @@
               },
             },
             success: () => alert("성공! 내 카톡방을 확인해보세요. ⚽️"),
-            fail: (err) => alert("전송 실패: " + JSON.stringify(err)),
+            fail: (err) => {
+              // 에러 코드가 -401(토큰 만료/인증 실패)인 경우
+              if (err.code === -401) {
+                alert(
+                  "로그인 시간이 만료되었습니다. 한 번 더 로그인해 주세요!",
+                );
+                localStorage.removeItem("kakao_token"); // 낡은 토큰 버리기
+                doLogin(); // 로그인 창 다시 띄우기
+              } else {
+                alert("전송 실패: " + JSON.stringify(err));
+              }
+            },
           });
         };
 
-        // 2. 이미 로그인되어 있는지(접근 토큰이 있는지) 검사
-        if (Kakao.Auth.getAccessToken()) {
-          // 이미 로그인이 되어있다면 팝업 없이 바로 쏜다!
-          sendMemo();
-        } else {
-          // 로그인이 안 되어있을 때만 팝업을 띄운다!
+        // 2. 로그인 창을 띄우고 토큰을 저장하는 함수
+        const doLogin = () => {
           Kakao.Auth.loginForm({
             scope: "talk_message",
-            success: function () {
-              sendMemo(); // 로그인 성공 시 바로 카톡 쏘기
+            success: function (authObj) {
+              // 💡 핵심: 로그인 성공 시 발급받은 토큰을 브라우저에 깊숙이 저장!
+              localStorage.setItem("kakao_token", authObj.access_token);
+              sendMemo(); // 저장 후 바로 카톡 쏘기
             },
             fail: function (err) {
-              alert("카카오 로그인 취소 또는 실패: " + JSON.stringify(err));
+              alert("카카오 로그인 취소 또는 에러: " + JSON.stringify(err));
             },
           });
+        };
+
+        // ==========================================
+        // 🚀 버튼을 눌렀을 때 실제 실행되는 순서
+        // ==========================================
+
+        // 브라우저 저장소에 내 카카오 토큰이 남아있는지 뒤져봅니다.
+        const savedToken = localStorage.getItem("kakao_token");
+
+        if (savedToken) {
+          // 토큰이 있다면? 카카오 SDK에 "나 이 토큰 쓸게!" 하고 장착한 뒤 팝업 없이 바로 발송!
+          Kakao.Auth.setAccessToken(savedToken);
+          sendMemo();
+        } else {
+          // 토큰이 아예 없다면? (처음 접속 시) 로그인 창 띄우기!
+          doLogin();
         }
       }
       init();
