@@ -467,9 +467,9 @@
             window.location.href = "kakaotalk://";
         });
       }
-      function sendToKakao(id) {
+   function sendToKakao(id) {
         if (!window.Kakao) {
-          alert("카카오 스크립트가 로드되지 않았습니다.");
+          alert("카카오 스크립트가 로드되지 않았습니다. 새로고침 후 다시 시도해주세요.");
           return;
         }
 
@@ -477,53 +477,16 @@
           Kakao.init("b11fcdbbd6ce44f0043d2eac9df42cd6");
         }
 
-        // 입력칸에서 값을 바로 가져와서 카드를 조립합니다.
-        const dateObj = new Date(dateInput.value);
-        const month = dateObj.getMonth() + 1 || "--";
-        const date = dateObj.getDate() || "--";
-        const dayName = days[dateObj.getDay()] || "-";
-        const time = timeInput.value || "--:--";
-        const loc = locationInput.value || "미정";
-        const opp = opponentInput.value || "미정";
-        const home = homeColor.value;
-        const away =
-          awayColor.value === "manual"
-            ? awayManualInput.value
-            : awayColor.value;
+        const messageText = document.getElementById(id).innerText;
 
-        // 🚀 일반 텍스트가 아닌 '피드(Feed) 카드' 형태로 전송!
+        // PC, 모바일 구분 없이 모두 '공유하기' (로그인 절대 안 물어봄, 에러 제로!)
         Kakao.Share.sendDefault({
-          objectType: "feed",
-          content: {
-            title: `⚡️ 24시 항시대기 VS ${opp} ⚡️`,
-            description: `• 일시 : ${month}/${date} (${dayName}) ${time}\n• 장소 : ${loc}\n• 컬러 : ${home} vs ${away}\n\n${customMessageInput.value}`,
-
-            // 썸네일 이미지 주소 (현재는 멋진 야간 축구장 무료 사진으로 세팅)
-            imageUrl:
-              "https://images.unsplash.com/photo-1518605368461-1b9b5f5eb103?auto=format&fit=crop&q=80&w=800",
-            link: {
-              mobileWebUrl: window.location.href,
-              webUrl: window.location.href,
-            },
+          objectType: "text",
+          text: messageText,
+          link: {
+            mobileWebUrl: window.location.href,
+            webUrl: window.location.href,
           },
-          buttons: [
-            {
-              title: "🗺️ 길안내 및 지도 보기",
-              link: {
-                // 입력한 경기장 이름(loc)으로 카카오맵 자동 검색!
-                mobileWebUrl: `https://map.kakao.com/link/search/${encodeURIComponent(loc)}`,
-                webUrl: `https://map.kakao.com/link/search/${encodeURIComponent(loc)}`,
-              },
-            },
-            {
-              title: "⚽️ 참석 투표하기",
-              link: {
-                // 투표 링크가 있다면 여기에 넣습니다. (임시로 현재 주소)
-                mobileWebUrl: window.location.href,
-                webUrl: window.location.href,
-              },
-            },
-          ],
         });
       }
       init();
