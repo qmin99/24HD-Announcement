@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ko" class="bg-[#fafafa]">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>24HD Command Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&display=swap');
+        body {
+            font-family: 'Pretendard', sans-serif;
+            color: #111827;
+            -webkit-tap-highlight-color: transparent;
+        }
+        /* Gold Text Gradient Utility */
+        .gold-text {
+            background: linear-gradient(135deg, #B68D40, #D4AF37, #B68D40);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            /* Fallback */
+            color: #D4AF37;
+        }
+        /* Top-tier SaaS Card Style */
+        .modern-card {
+            background: #ffffff;
+            border: 1px solid #f3f4f6;
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.03);
+            border-radius: 16px;
+        }
+        /* Clean Input Fields */
+        .input-field {
+            width: 100%;
+            background-color: #f9fafb;
+            border: 1px solid #f3f4f6;
+            border-radius: 10px;
+            padding: 0.65rem 0.8rem;
+            font-size: 0.9375rem;
+            transition: all 0.2s ease;
+            color: #111827;
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: #D4AF37; /* Focus color to gold */
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+        /* Sleek Gold Generate Button (Updated Sizing) */
+        .generate-btn {
+            background: linear-gradient(135deg, #D4AF37, #C5A028);
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 0.9rem;
+            border-radius: 12px; /* Radius Reduced */
+            padding: 0.6rem 1.8rem; /* Padding Reduced */
+            box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
+            transition: all 0.2s ease;
+            letter-spacing: 0.02em;
+        }
+        .generate-btn:hover {
+            box-shadow: 0 6px 15px rgba(212, 175, 55, 0.4);
+        }
+        .generate-btn:active {
+            transform: scale(0.96);
+            background: linear-gradient(135deg, #C5A028, #B68D40);
+        }
+        /* Gold Action Button */
+        .main-action-button {
+            background: linear-gradient(135deg, #D4AF37, #C5A028);
+            color: #ffffff;
+            font-weight: 700;
+            border-radius: 12px;
+            padding: 0.9rem;
+            box-shadow: 0 8px 15px -3px rgba(212, 175, 55, 0.3);
+            transition: transform 0.1s ease;
+        }
+        .main-action-button:active {
+            transform: scale(0.98);
+        }
+        .copy-btn {
+            color: #D4AF37;
+            border: 1px solid #D4AF37;
+            background: #fff;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+        .copy-btn:active {
+            background: #D4AF37;
+            color: white;
+        }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body class="min-h-screen p-4 flex justify-center pb-12">
+
+    <div class="w-full max-w-md space-y-6">
+        <header class="flex flex-col items-center justify-center pt-6 pb-4 border-b border-gray-100">
+            <span class="px-3 py-1 bg-amber-50 text-[#D4AF37] text-[0.65rem] font-bold tracking-widest rounded-full mb-3 uppercase border border-[#D4AF37]/20">
+                Squad Manager
+            </span>
+            <h1 class="text-3xl font-extrabold tracking-tight gold-text">
+                24HD Command
+            </h1>
+            <p class="text-gray-400 text-xs mt-1.5 font-medium">Match Announcement Automator</p>
+        </header>
+
+        <section class="modern-card p-5 space-y-4">
+            <div class="grid grid-cols-2 gap-3">
+                <div class="space-y-1.5">
+                    <label class="text-[0.7rem] text-gray-400 font-bold uppercase tracking-wider ml-1">Date</label>
+                    <input type="date" id="dateInput" class="input-field">
+                </div>
+                <div class="space-y-1.5">
+                    <label class="text-[0.7rem] text-gray-400 font-bold uppercase tracking-wider ml-1">Time</label>
+                    <input type="time" id="timeInput" value="18:00" class="input-field">
+                </div>
+            </div>
+
+            <div class="space-y-1.5">
+                <label class="text-[0.7rem] text-gray-400 font-bold uppercase tracking-wider ml-1">Location</label>
+                <input type="text" id="locationInput" list="locations" autocomplete="off" placeholder="경기장 입력" class="input-field">
+                <datalist id="locations"></datalist>
+            </div>
+
+            <div class="space-y-1.5">
+                <label class="text-[0.7rem] text-gray-400 font-bold uppercase tracking-wider ml-1">Opponent Team</label>
+                <input type="text" id="opponentInput" list="opponents" autocomplete="off" placeholder="상대팀 이름" class="input-field">
+                <datalist id="opponents"></datalist>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div class="space-y-1.5">
+                    <label class="text-[0.7rem] text-gray-400 font-bold uppercase tracking-wider ml-1">Our Color</label>
+                    <select id="homeColor" class="input-field appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23D4AF37%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-13%205.4A17.6%2017.6%200%200%200%200%2087.2c0%205%201.8%209.3%205.4%2013l128%20128c3.6%203.6%208%205.4%2013%205.4s9.3-1.8%2013-5.4l128-128c3.6-3.6%205.4-8%205.4-13%200-5-1.8-9.3-5.4-13z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-no-repeat bg-[right_0.8rem_center] pr-8">
+                        <option value="White">White</option>
+                        <option value="Black">Black</option>
+                    </select>
+                </div>
+                <div class="space-y-1.5">
+                    <label class="text-[0.7rem] text-gray-400 font-bold uppercase tracking-wider ml-1">Away Color</label>
+                    <select id="awayColor" class="input-field appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23D4AF37%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-13%205.4A17.6%2017.6%200%200%200%200%2087.2c0%205%201.8%209.3%205.4%2013l128%20128c3.6%203.6%208%205.4%2013%205.4s9.3-1.8%2013-5.4l128-128c3.6-3.6%205.4-8%205.4-13%200-5-1.8-9.3-5.4-13z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-no-repeat bg-[right_0.8rem_center] pr-8">
+                        <option value="Black">Black</option>
+                        <option value="White">White</option>
+                        <option value="Red">Red</option>
+                        <option value="Blue">Blue</option>
+                        <option value="Yellow">Yellow</option>
+                        <option value="Green">Green</option>
+                        <option value="manual">직접 입력...</option>
+                    </select>
+                    <input type="text" id="awayManualInput" autocomplete="off" placeholder="컬러 입력" class="input-field mt-2 hidden">
+                </div>
+            </div>
+
+            <div class="space-y-1.5 pt-1">
+                <label class="text-[0.7rem] text-gray-400 font-bold uppercase tracking-wider ml-1">Weekly Message</label>
+                <textarea id="customMessageInput" rows="2" class="input-field resize-none text-[0.85rem]" placeholder="이번주 멘트를 입력하세요...">저번 경기 멤버들 많이 나와서 경기력도 훨씬 좋아지고 너무 재밌었죠~ 이번주도 기세 이어서 높은 참석율 가봅시다!!</textarea>
+            </div>
+        </section>
+
+        <div class="flex justify-center pt-2">
+            <button type="button" id="confirmBtn" onclick="revealPreviews()" class="generate-btn flex items-center justify-center gap-2">
+                🚀 Generate
+            </button>
+        </div>
+
+        <div id="previewContainer" class="hidden flex-col gap-4 pt-4">
+            <div class="modern-card p-4 relative group">
+                <div class="flex justify-between items-center mb-3 border-b border-gray-100 pb-2">
+                    <p class="text-[0.7rem] text-gray-400 font-bold tracking-wide">1. 공지사항 (톡방용)</p>
+                    <button onclick="copyText('preview1')" class="copy-btn">COPY</button>
+                </div>
+                <pre id="preview1" class="text-[0.85rem] whitespace-pre-wrap font-sans leading-relaxed text-gray-800"></pre>
+            </div>
+
+            <div class="modern-card p-4 relative group">
+                <div class="flex justify-between items-center mb-3 border-b border-gray-100 pb-2">
+                    <p class="text-[0.7rem] text-gray-400 font-bold tracking-wide">2. 투표 제목용</p>
+                    <button onclick="copyText('preview2')" class="copy-btn">COPY</button>
+                </div>
+                <pre id="preview2" class="text-[0.85rem] whitespace-pre-wrap font-sans leading-relaxed text-gray-800"></pre>
+            </div>
+
+            <div class="modern-card p-4 relative group">
+                <div class="flex justify-between items-center mb-3 border-b border-gray-100 pb-2">
+                    <p class="text-[0.7rem] text-gray-400 font-bold tracking-wide">3. 당일 리마인드용</p>
+                    <button onclick="copyText('preview3')" class="copy-btn">COPY</button>
+                </div>
+                <pre id="preview3" class="text-[0.85rem] whitespace-pre-wrap font-sans leading-relaxed text-gray-800"></pre>
+            </div>
+
+            <button onclick="copyMainAndOpenKakao()" class="w-full main-action-button flex items-center justify-center gap-2 mt-4">
+                <span class="text-lg">💬</span> 공지사항 복사 & 카톡 열기
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const inputs = ['dateInput', 'timeInput', 'locationInput', 'opponentInput', 'homeColor', 'awayColor', 'awayManualInput', 'customMessageInput'].map(id => document.getElementById(id));
+        const [dateInput, timeInput, locationInput, opponentInput, homeColor, awayColor, awayManualInput, customMessageInput] = inputs;
+        const previews = ['preview1', 'preview2', 'preview3'].map(id => document.getElementById(id));
+        const days = ['일', '월', '화', '수', '목', '금', '토'];
+
+        function init() {
+            setNextSaturday();
+            renderHistory('24hd_locations', 'locations');
+            renderHistory('24hd_opponents', 'opponents');
+            
+            inputs.forEach(input => input.addEventListener('input', generateTextOnly));
+            
+            awayColor.addEventListener('change', function() {
+                if (this.value === 'manual') {
+                    awayManualInput.classList.remove('hidden');
+                    awayManualInput.focus();
+                } else {
+                    awayManualInput.classList.add('hidden');
+                }
+                generateTextOnly();
+            });
+
+            generateTextOnly();
+        }
+
+        function setNextSaturday() {
+            const now = new Date();
+            const dayOfWeek = now.getDay();
+            const daysUntilSaturday = (6 - dayOfWeek + 7) % 7 || 7; 
+            now.setDate(now.getDate() + daysUntilSaturday);
+            
+            const yyyy = now.getFullYear();
+            const mm = String(now.getMonth() + 1).padStart(2, '0');
+            const dd = String(now.getDate()).padStart(2, '0');
+            dateInput.value = `${yyyy}-${mm}-${dd}`;
+        }
+
+        function getCalculatedTimes(timeStr) {
+            if (!timeStr) return { endStr: '00:00', briefStr: '00:00' };
+            const [h, m] = timeStr.split(':').map(Number);
+            const dateObj = new Date(2000, 0, 1, h, m);
+            
+            const endObj = new Date(dateObj.getTime() + 2 * 60 * 60 * 1000);
+            const endStr = endObj.toTimeString().substring(0, 5);
+            
+            const briefObj = new Date(dateObj.getTime() - 30 * 60 * 1000);
+            const briefStr = briefObj.toTimeString().substring(0, 5);
+
+            return { endStr, briefStr };
+        }
+
+        function getEmojiColor(color) {
+            if(color === 'White') return '🏳️ 흰색 🏳️';
+            if(color === 'Black') return '❗️검정색 🏴❗️';
+            return `❗️${color}❗️`;
+        }
+
+        function generateTextOnly() {
+            let dateObj;
+            try { dateObj = new Date(dateInput.value); } catch(e) { dateObj = new Date(); }
+            
+            const month = isNaN(dateObj.getMonth()) ? '--' : dateObj.getMonth() + 1;
+            const date = isNaN(dateObj.getDate()) ? '--' : dateObj.getDate();
+            const dayName = isNaN(dateObj.getDay()) ? '-' : days[dateObj.getDay()];
+            
+            const time = timeInput.value || '--:--';
+            const { endStr, briefStr } = getCalculatedTimes(timeInput.value);
+            const loc = locationInput.value || '미정';
+            const opp = opponentInput.value || '미정';
+            const home = homeColor.value;
+            
+            let away = awayColor.value;
+            if (away === 'manual') {
+                away = awayManualInput.value || '미정';
+            }
+
+            const customMsg = customMessageInput.value;
+            const homeEmoji = getEmojiColor(home);
+
+            previews[0].innerText = `⚡️${month}/${date} (${dayName}) 이번주 매치⚡️
+
+24시 항시대기 VS ${opp}
+━━━━━━━━━━━━━━
+• 일시     |    ${month}/${date} (${dayName}) ${time} ~ ${endStr}
+• 장소     |    ${loc}
+• 컬러     |    ${home} (우리) vs ${away} (상대)
+
+${customMsg}
+
+유니폼 미소지 시 ${homeEmoji} 상의 지참 필수!
+많은 참여 부탁드립니다~!!!!`;
+
+            previews[1].innerText = `⚽️ ${month}/${date} ${dayName}요일 ${time} 경기(${loc})`;
+
+            previews[2].innerText = `오늘 경기 ${time} ${loc}
+유니폼 ${homeEmoji}입니다.
+경기전 브리핑 위해서 30분전 ${briefStr}까지 도착 부탁드립니다!!`;
+        }
+
+        function revealPreviews() {
+            generateTextOnly();
+            
+            const loc = locationInput.value;
+            const opp = opponentInput.value;
+            if(loc && loc !== '미정') saveToHistory('24hd_locations', 'locations', loc);
+            if(opp && opp !== '미정') saveToHistory('24hd_opponents', 'opponents', opp);
+
+            const container = document.getElementById('previewContainer');
+            const btn = document.getElementById('confirmBtn');
+            
+            container.classList.remove('hidden');
+            container.classList.add('flex');
+            
+            btn.innerHTML = '🔄 Regenerate';
+            btn.style.background = '#f3f4f6';
+            btn.style.color = '#111827';
+            btn.style.boxShadow = 'none';
+            btn.style.borderRadius = '12px'; // Ensure radius is reset on regenerate state
+            
+            setTimeout(() => {
+                container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 50);
+        }
+
+        function saveToHistory(storageKey, datalistId, value) {
+            let history = JSON.parse(localStorage.getItem(storageKey) || '[]');
+            if(value.trim() !== '' && !history.includes(value)) {
+                history.unshift(value);
+                if(history.length > 5) history.pop();
+                localStorage.setItem(storageKey, JSON.stringify(history));
+                renderHistory(storageKey, datalistId);
+            }
+        }
+
+        function renderHistory(storageKey, datalistId) {
+            const datalist = document.getElementById(datalistId);
+            let history = JSON.parse(localStorage.getItem(storageKey) || '[]');
+            datalist.innerHTML = history.map(item => `<option value="${item}">`).join('');
+        }
+
+        function copyText(id) {
+            const text = document.getElementById(id).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.querySelector(`button[onclick="copyText('${id}')"]`);
+                const originalText = btn.innerText;
+                btn.innerText = 'Copied!';
+                btn.style.background = '#D4AF37';
+                btn.style.color = 'white';
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.background = '#fff';
+                    btn.style.color = '#D4AF37';
+                }, 1500);
+            });
+        }
+
+        function copyMainAndOpenKakao() {
+            const text = previews[0].innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                if(confirm('메인 공지사항이 복사되었습니다.\n카카오톡을 여시겠습니까?')) {
+                    window.location.href = 'kakaotalk://';
+                }
+            });
+        }
+
+        if(localStorage.getItem('24hd_locations')) {
+            const locs = JSON.parse(localStorage.getItem('24hd_locations'));
+            if(locs.some(l => l.length < 3 && l !== '잠풍')) {
+                localStorage.removeItem('24hd_locations');
+                localStorage.removeItem('24hd_opponents');
+            }
+        }
+
+        init();
+    </script>
+</body>
+</html>
