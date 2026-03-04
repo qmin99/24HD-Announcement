@@ -516,7 +516,7 @@
 
         // 2. 로그인 창을 띄우고 토큰을 저장하는 함수
         const doLogin = () => {
-          Kakao.Auth.loginForm({
+          const loginOptions = {
             scope: "talk_message",
             success: function (authObj) {
               // 💡 핵심: 로그인 성공 시 발급받은 토큰을 브라우저에 깊숙이 저장!
@@ -526,7 +526,20 @@
             fail: function (err) {
               alert("카카오 로그인 취소 또는 에러: " + JSON.stringify(err));
             },
-          });
+          };
+
+          // 기기가 모바일인지 확인
+          const isMobile = /iPhone|iPad|iPod|Android/i.test(
+            navigator.userAgent,
+          );
+
+          if (isMobile) {
+            // 스마트폰: 카카오톡 앱을 직접 호출
+            Kakao.Auth.login(loginOptions);
+          } else {
+            // PC: 이메일/비밀번호 입력 웹 팝업
+            Kakao.Auth.loginForm(loginOptions);
+          }
         };
 
         // ==========================================
