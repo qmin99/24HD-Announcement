@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko" class="bg-[#fafafa]">
   <head>
     <meta charset="UTF-8" />
@@ -8,13 +8,12 @@
     />
     <title>24HD Command Center</title>
     <script src="https://cdn.tailwindcss.com"></script>
-      <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 
     <script>
       // 카카오 자바스크립트 키 (유지됨)
       if (!window.Kakao.isInitialized()) {
         Kakao.init("b11fcdbbd6ce44f0043d2eac9df42cd6");
-        
       }
     </script>
     <style>
@@ -63,7 +62,9 @@
         transition: all 0.2s ease;
         letter-spacing: 0.02em;
       }
-      .generate-btn:active { transform: scale(0.96); }
+      .generate-btn:active {
+        transform: scale(0.96);
+      }
       .main-action-button {
         background: linear-gradient(135deg, #d4af37, #c5a028);
         color: #ffffff;
@@ -83,11 +84,14 @@
         font-weight: 700;
         transition: all 0.2s;
       }
-      .copy-btn:active { background: #d4af37; color: white; }
-      
+      .copy-btn:active {
+        background: #d4af37;
+        color: white;
+      }
+
       /* 연하고 세련되게 바뀐 SEND 버튼 */
       .send-btn {
-        background-color: #FFF9C4; /* 연한 소프트 옐로우 */
+        background-color: #fff9c4; /* 연한 소프트 옐로우 */
         color: #856404; /* 갈색 계열 글자색으로 고급스러움 추가 */
         padding: 4px 10px;
         border-radius: 6px;
@@ -95,52 +99,102 @@
         font-weight: 700;
         transition: all 0.2s;
       }
-      .send-btn:active { transform: scale(0.95); background-color: #FFF59D; }
+      .send-btn:active {
+        transform: scale(0.95);
+        background-color: #fff59d;
+      }
 
-      .hidden { display: none !important; }
+      .hidden {
+        display: none !important;
+      }
     </style>
   </head>
   <body class="min-h-screen p-4 flex justify-center pb-12">
     <div class="w-full max-w-md space-y-6">
-      <header class="flex flex-col items-center justify-center pt-6 pb-4 border-b border-gray-100">
-        <span class="px-3 py-1 bg-amber-50 text-[#D4AF37] text-[0.65rem] font-bold tracking-widest rounded-full mb-3 uppercase border border-[#D4AF37]/20">
+      <header
+        class="flex flex-col items-center justify-center pt-6 pb-4 border-b border-gray-100"
+      >
+        <span
+          class="px-3 py-1 bg-amber-50 text-[#D4AF37] text-[0.65rem] font-bold tracking-widest rounded-full mb-3 uppercase border border-[#D4AF37]/20"
+        >
           Squad Manager
         </span>
-        <h1 class="text-3xl font-extrabold tracking-tight gold-text">24HD Command</h1>
-        <p class="text-gray-400 text-xs mt-1.5 font-medium">Match Announcement Automator</p>
+        <h1 class="text-3xl font-extrabold tracking-tight gold-text">
+          24HD Command
+        </h1>
+        <p class="text-gray-400 text-xs mt-1.5 font-medium">
+          Match Announcement Automator
+        </p>
       </header>
 
       <section class="modern-card p-5 space-y-4">
         <div class="grid grid-cols-2 gap-3">
           <div class="space-y-1.5">
-            <label class="text-[0.7rem] text-gray-400 font-bold uppercase tracking-wider ml-1">Date</label>
+            <label
+              class="text-[0.7rem] text-gray-400 font-bold uppercase tracking-wider ml-1"
+              >Date</label
+            >
             <input type="date" id="dateInput" class="input-field" />
           </div>
           <div class="space-y-1.5">
-            <label class="text-[0.7rem] text-gray-400 font-bold uppercase tracking-wider ml-1">Time</label>
-            <input type="time" id="timeInput" value="18:00" class="input-field" />
+            <label
+              class="text-[0.7rem] text-gray-400 font-bold uppercase tracking-wider ml-1"
+              >Time</label
+            >
+            <input
+              type="time"
+              id="timeInput"
+              value="18:00"
+              class="input-field"
+            />
           </div>
         </div>
         <div class="space-y-1.5">
-          <label class="text-[0.7rem] text-gray-400 font-bold uppercase tracking-wider ml-1">Location</label>
-          <input type="text" id="locationInput" list="locations" autocomplete="off" placeholder="경기장 입력" class="input-field" />
+          <label
+            class="text-[0.7rem] text-gray-400 font-bold uppercase tracking-wider ml-1"
+            >Location</label
+          >
+          <input
+            type="text"
+            id="locationInput"
+            list="locations"
+            autocomplete="off"
+            placeholder="경기장 입력"
+            class="input-field"
+          />
           <datalist id="locations"></datalist>
         </div>
         <div class="space-y-1.5">
-          <label class="text-[0.7rem] text-gray-400 font-bold uppercase tracking-wider ml-1">Opponent Team</label>
-          <input type="text" id="opponentInput" list="opponents" autocomplete="off" placeholder="상대팀 이름" class="input-field" />
+          <label
+            class="text-[0.7rem] text-gray-400 font-bold uppercase tracking-wider ml-1"
+            >Opponent Team</label
+          >
+          <input
+            type="text"
+            id="opponentInput"
+            list="opponents"
+            autocomplete="off"
+            placeholder="상대팀 이름"
+            class="input-field"
+          />
           <datalist id="opponents"></datalist>
         </div>
         <div class="grid grid-cols-2 gap-3">
           <div class="space-y-1.5">
-            <label class="text-[0.7rem] text-gray-400 font-bold uppercase tracking-wider ml-1">Our Color</label>
+            <label
+              class="text-[0.7rem] text-gray-400 font-bold uppercase tracking-wider ml-1"
+              >Our Color</label
+            >
             <select id="homeColor" class="input-field appearance-none">
               <option value="White">White</option>
               <option value="Black">Black</option>
             </select>
           </div>
           <div class="space-y-1.5">
-            <label class="text-[0.7rem] text-gray-400 font-bold uppercase tracking-wider ml-1">Away Color</label>
+            <label
+              class="text-[0.7rem] text-gray-400 font-bold uppercase tracking-wider ml-1"
+              >Away Color</label
+            >
             <select id="awayColor" class="input-field appearance-none">
               <option value="Black">Black</option>
               <option value="White">White</option>
@@ -150,72 +204,149 @@
               <option value="Green">Green</option>
               <option value="manual">직접 입력...</option>
             </select>
-            <input type="text" id="awayManualInput" class="input-field mt-2 hidden" placeholder="컬러 입력" />
+            <input
+              type="text"
+              id="awayManualInput"
+              class="input-field mt-2 hidden"
+              placeholder="컬러 입력"
+            />
           </div>
         </div>
         <div class="space-y-1.5 pt-1">
-          <label class="text-[0.7rem] text-gray-400 font-bold uppercase tracking-wider ml-1">Weekly Message</label>
-          <textarea id="customMessageInput" rows="2" class="input-field resize-none text-[0.85rem]">저번 경기 멤버들 많이 나와서 경기력도 훨씬 좋아지고 너무 재밌었죠~ 이번주도 기세 이어서 높은 참석율 가봅시다!!</textarea>
+          <label
+            class="text-[0.7rem] text-gray-400 font-bold uppercase tracking-wider ml-1"
+            >Weekly Message</label
+          >
+          <textarea
+            id="customMessageInput"
+            rows="2"
+            class="input-field resize-none text-[0.85rem]"
+          >
+저번 경기 멤버들 많이 나와서 경기력도 훨씬 좋아지고 너무 재밌었죠~ 이번주도 기세 이어서 높은 참석율 가봅시다!!</textarea
+          >
         </div>
       </section>
 
       <div class="flex justify-center pt-2">
-        <button type="button" id="confirmBtn" onclick="revealPreviews()" class="generate-btn flex items-center justify-center gap-2">
+        <button
+          type="button"
+          id="confirmBtn"
+          onclick="revealPreviews()"
+          class="generate-btn flex items-center justify-center gap-2"
+        >
           🚀 Generate
         </button>
       </div>
 
       <div id="previewContainer" class="hidden flex-col gap-4 pt-4">
         <div class="modern-card p-4">
-          <div class="flex justify-between items-center mb-3 border-b border-gray-100 pb-2">
-            <p class="text-[0.7rem] text-gray-400 font-bold tracking-wide">1. 공지사항 (톡방용)</p>
+          <div
+            class="flex justify-between items-center mb-3 border-b border-gray-100 pb-2"
+          >
+            <p class="text-[0.7rem] text-gray-400 font-bold tracking-wide">
+              1. 공지사항 (톡방용)
+            </p>
             <div class="flex gap-1.5">
-              <button onclick="copyText('preview1')" class="copy-btn">COPY</button>
-              <button onclick="sendToKakao('preview1')" class="send-btn">SEND 💬</button>
+              <button onclick="copyText('preview1')" class="copy-btn">
+                COPY
+              </button>
+              <button onclick="sendToKakao('preview1')" class="send-btn">
+                SEND 💬
+              </button>
             </div>
           </div>
-          <pre id="preview1" class="text-[0.85rem] whitespace-pre-wrap font-sans leading-relaxed text-gray-800"></pre>
+          <pre
+            id="preview1"
+            class="text-[0.85rem] whitespace-pre-wrap font-sans leading-relaxed text-gray-800"
+          ></pre>
         </div>
 
         <div class="modern-card p-4">
-          <div class="flex justify-between items-center mb-3 border-b border-gray-100 pb-2">
-            <p class="text-[0.7rem] text-gray-400 font-bold tracking-wide">2. 투표 제목용</p>
+          <div
+            class="flex justify-between items-center mb-3 border-b border-gray-100 pb-2"
+          >
+            <p class="text-[0.7rem] text-gray-400 font-bold tracking-wide">
+              2. 투표 제목용
+            </p>
             <div class="flex gap-1.5">
-              <button onclick="copyText('preview2')" class="copy-btn">COPY</button>
-              <button onclick="sendToKakao('preview2')" class="send-btn">SEND 💬</button>
+              <button onclick="copyText('preview2')" class="copy-btn">
+                COPY
+              </button>
+              <button onclick="sendToKakao('preview2')" class="send-btn">
+                SEND 💬
+              </button>
             </div>
           </div>
-          <pre id="preview2" class="text-[0.85rem] whitespace-pre-wrap font-sans leading-relaxed text-gray-800"></pre>
+          <pre
+            id="preview2"
+            class="text-[0.85rem] whitespace-pre-wrap font-sans leading-relaxed text-gray-800"
+          ></pre>
         </div>
 
         <div class="modern-card p-4">
-          <div class="flex justify-between items-center mb-3 border-b border-gray-100 pb-2">
-            <p class="text-[0.7rem] text-gray-400 font-bold tracking-wide">3. 당일 리마인드용</p>
+          <div
+            class="flex justify-between items-center mb-3 border-b border-gray-100 pb-2"
+          >
+            <p class="text-[0.7rem] text-gray-400 font-bold tracking-wide">
+              3. 당일 리마인드용
+            </p>
             <div class="flex gap-1.5">
-              <button onclick="copyText('preview3')" class="copy-btn">COPY</button>
-              <button onclick="sendToKakao('preview3')" class="send-btn">SEND 💬</button>
+              <button onclick="copyText('preview3')" class="copy-btn">
+                COPY
+              </button>
+              <button onclick="sendToKakao('preview3')" class="send-btn">
+                SEND 💬
+              </button>
             </div>
           </div>
-          <pre id="preview3" class="text-[0.85rem] whitespace-pre-wrap font-sans leading-relaxed text-gray-800"></pre>
+          <pre
+            id="preview3"
+            class="text-[0.85rem] whitespace-pre-wrap font-sans leading-relaxed text-gray-800"
+          ></pre>
         </div>
 
-        <button onclick="copyMainAndOpenKakao()" class="w-full main-action-button flex items-center justify-center gap-2 mt-4">
+        <button
+          onclick="copyMainAndOpenKakao()"
+          class="w-full main-action-button flex items-center justify-center gap-2 mt-4"
+        >
           <span class="text-lg">💬</span> 공지사항 복사 & 카톡 열기
         </button>
       </div>
     </div>
 
     <script>
-      const inputs = ["dateInput", "timeInput", "locationInput", "opponentInput", "homeColor", "awayColor", "awayManualInput", "customMessageInput"].map((id) => document.getElementById(id));
-      const [dateInput, timeInput, locationInput, opponentInput, homeColor, awayColor, awayManualInput, customMessageInput] = inputs;
-      const previews = ["preview1", "preview2", "preview3"].map((id) => document.getElementById(id));
+      const inputs = [
+        "dateInput",
+        "timeInput",
+        "locationInput",
+        "opponentInput",
+        "homeColor",
+        "awayColor",
+        "awayManualInput",
+        "customMessageInput",
+      ].map((id) => document.getElementById(id));
+      const [
+        dateInput,
+        timeInput,
+        locationInput,
+        opponentInput,
+        homeColor,
+        awayColor,
+        awayManualInput,
+        customMessageInput,
+      ] = inputs;
+      const previews = ["preview1", "preview2", "preview3"].map((id) =>
+        document.getElementById(id),
+      );
       const days = ["일", "월", "화", "수", "목", "금", "토"];
 
       function init() {
         setNextSaturday();
         renderHistory("24hd_locations", "locations");
         renderHistory("24hd_opponents", "opponents");
-        inputs.forEach((input) => input.addEventListener("input", generateTextOnly));
+        inputs.forEach((input) =>
+          input.addEventListener("input", generateTextOnly),
+        );
         awayColor.addEventListener("change", function () {
           if (this.value === "manual") {
             awayManualInput.classList.remove("hidden");
@@ -232,15 +363,19 @@
         const now = new Date();
         const daysUntilSaturday = (6 - now.getDay() + 7) % 7 || 7;
         now.setDate(now.getDate() + daysUntilSaturday);
-        dateInput.value = now.toISOString().split('T')[0];
+        dateInput.value = now.toISOString().split("T")[0];
       }
 
       function getCalculatedTimes(timeStr) {
         if (!timeStr) return { endStr: "00:00", briefStr: "00:00" };
         const [h, m] = timeStr.split(":").map(Number);
         const dateObj = new Date(2000, 0, 1, h, m);
-        const endStr = new Date(dateObj.getTime() + 2 * 60 * 60 * 1000).toTimeString().substring(0, 5);
-        const briefStr = new Date(dateObj.getTime() - 30 * 60 * 1000).toTimeString().substring(0, 5);
+        const endStr = new Date(dateObj.getTime() + 2 * 60 * 60 * 1000)
+          .toTimeString()
+          .substring(0, 5);
+        const briefStr = new Date(dateObj.getTime() - 30 * 60 * 1000)
+          .toTimeString()
+          .substring(0, 5);
         return { endStr, briefStr };
       }
 
@@ -260,7 +395,10 @@
         const loc = locationInput.value || "미정";
         const opp = opponentInput.value || "미정";
         const home = homeColor.value;
-        const away = awayColor.value === "manual" ? awayManualInput.value : awayColor.value;
+        const away =
+          awayColor.value === "manual"
+            ? awayManualInput.value
+            : awayColor.value;
         const homeEmoji = getEmojiColor(home);
 
         previews[0].innerText = `⚡️${month}/${date} (${dayName}) 이번주 매치⚡️\n\n24시 항시대기 VS ${opp}\n━━━━━━━━━━━━━━\n• 일시     |    ${month}/${date} (${dayName}) ${time} ~ ${endStr}\n• 장소     |    ${loc}\n• 컬러     |    ${home} (우리) vs ${away}\n\n${customMessageInput.value}\n\n유니폼 미소지 시 ${homeEmoji} 상의 지참 필수!\n많은 참여 부탁드립니다~!!!!`;
@@ -270,64 +408,120 @@
 
       function revealPreviews() {
         generateTextOnly();
-        if (locationInput.value) saveToHistory("24hd_locations", "locations", locationInput.value);
-        if (opponentInput.value) saveToHistory("24hd_opponents", "opponents", opponentInput.value);
+        if (locationInput.value)
+          saveToHistory("24hd_locations", "locations", locationInput.value);
+        if (opponentInput.value)
+          saveToHistory("24hd_opponents", "opponents", opponentInput.value);
         document.getElementById("previewContainer").classList.remove("hidden");
         document.getElementById("previewContainer").classList.add("flex");
         const btn = document.getElementById("confirmBtn");
         btn.innerHTML = "🔄 Regenerate";
-        btn.style.background = "#f3f4f6"; btn.style.color = "#111827"; btn.style.boxShadow = "none";
-        setTimeout(() => { window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }); }, 50);
+        btn.style.background = "#f3f4f6";
+        btn.style.color = "#111827";
+        btn.style.boxShadow = "none";
+        setTimeout(() => {
+          window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: "smooth",
+          });
+        }, 50);
       }
 
       function saveToHistory(key, id, val) {
         let h = JSON.parse(localStorage.getItem(key) || "[]");
         if (val.trim() !== "" && !h.includes(val)) {
-          h.unshift(val); if (h.length > 5) h.pop();
-          localStorage.setItem(key, JSON.stringify(h)); renderHistory(key, id);
+          h.unshift(val);
+          if (h.length > 5) h.pop();
+          localStorage.setItem(key, JSON.stringify(h));
+          renderHistory(key, id);
         }
       }
 
       function renderHistory(key, id) {
-        document.getElementById(id).innerHTML = JSON.parse(localStorage.getItem(key) || "[]").map((i) => `<option value="${i}">`).join("");
+        document.getElementById(id).innerHTML = JSON.parse(
+          localStorage.getItem(key) || "[]",
+        )
+          .map((i) => `<option value="${i}">`)
+          .join("");
       }
 
       function copyText(id) {
-        navigator.clipboard.writeText(document.getElementById(id).innerText).then(() => {
-          const btn = document.querySelector(`button[onclick="copyText('${id}')"]`);
-          const original = btn.innerText;
-          btn.innerText = "Copied!"; btn.style.background = "#D4AF37"; btn.style.color = "white";
-          setTimeout(() => { btn.innerText = original; btn.style.background = "#fff"; btn.style.color = "#D4AF37"; }, 1500);
-        });
+        navigator.clipboard
+          .writeText(document.getElementById(id).innerText)
+          .then(() => {
+            const btn = document.querySelector(
+              `button[onclick="copyText('${id}')"]`,
+            );
+            const original = btn.innerText;
+            btn.innerText = "Copied!";
+            btn.style.background = "#D4AF37";
+            btn.style.color = "white";
+            setTimeout(() => {
+              btn.innerText = original;
+              btn.style.background = "#fff";
+              btn.style.color = "#D4AF37";
+            }, 1500);
+          });
       }
 
       function copyMainAndOpenKakao() {
         navigator.clipboard.writeText(previews[0].innerText).then(() => {
-          if (confirm("메인 공지사항이 복사되었습니다.\n카카오톡을 여시겠습니까?")) window.location.href = "kakaotalk://";
+          if (
+            confirm("메인 공지사항이 복사되었습니다.\n카카오톡을 여시겠습니까?")
+          )
+            window.location.href = "kakaotalk://";
         });
       }
-
       function sendToKakao(id) {
+        if (!window.Kakao) {
+          alert(
+            "카카오 스크립트가 로드되지 않았습니다. 새로고침 후 다시 시도해주세요.",
+          );
+          return;
+        }
+
+        if (!Kakao.isInitialized()) {
+          Kakao.init("b11fcdbbd6ce44f0043d2eac9df42cd6");
+        }
+
         const messageText = document.getElementById(id).innerText;
-        Kakao.Auth.loginForm({
-          scope: "talk_message",
-          success: function () {
-            Kakao.API.request({
-              url: "/v2/api/talk/memo/default/send",
-              data: {
-                template_object: {
-                  object_type: "text",
-                  text: messageText,
-                  link: { mobile_web_url: window.location.href, web_url: window.location.href },
+
+        // 1. 진짜로 카톡을 보내는 핵심 기능 (재사용을 위해 따로 묶어둠)
+        const sendMemo = () => {
+          Kakao.API.request({
+            url: "/v2/api/talk/memo/default/send",
+            data: {
+              template_object: {
+                object_type: "text",
+                text: messageText,
+                link: {
+                  mobile_web_url: window.location.href,
+                  web_url: window.location.href,
                 },
               },
-              success: () => alert("성공! 내 카톡방을 확인해보세요. ⚽️"),
-              fail: (err) => alert("실패: " + JSON.stringify(err)),
-            });
-          }
-        });
-      }
+            },
+            success: () => alert("성공! 내 카톡방을 확인해보세요. ⚽️"),
+            fail: (err) => alert("전송 실패: " + JSON.stringify(err)),
+          });
+        };
 
+        // 2. 이미 로그인되어 있는지(접근 토큰이 있는지) 검사
+        if (Kakao.Auth.getAccessToken()) {
+          // 이미 로그인이 되어있다면 팝업 없이 바로 쏜다!
+          sendMemo();
+        } else {
+          // 로그인이 안 되어있을 때만 팝업을 띄운다!
+          Kakao.Auth.loginForm({
+            scope: "talk_message",
+            success: function () {
+              sendMemo(); // 로그인 성공 시 바로 카톡 쏘기
+            },
+            fail: function (err) {
+              alert("카카오 로그인 취소 또는 실패: " + JSON.stringify(err));
+            },
+          });
+        }
+      }
       init();
     </script>
   </body>
