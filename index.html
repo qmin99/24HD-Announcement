@@ -308,7 +308,7 @@
 
       function sendToKakao(id) {
         const messageText = document.getElementById(id).innerText;
-        Kakao.Auth.login({
+        Kakao.Auth.loginForm({
           scope: "talk_message",
           success: function () {
             Kakao.API.request({
