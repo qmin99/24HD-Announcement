@@ -446,9 +446,9 @@
       }
       
       // 🚀 드디어 적용된 핵심 '피드 카드' 분기 로직
-      function sendToKakao(id) {
+     function sendToKakao(id) {
         if (!window.Kakao) {
-          alert("카카오 스크립트가 로드되지 않았습니다. 새로고침 후 다시 시도해주세요.");
+          alert("카카오 스크립트가 로드되지 않았습니다.");
           return;
         }
 
@@ -457,64 +457,55 @@
         }
 
         const messageText = document.getElementById(id).innerText;
-        const webUrl = "https://24hd-announcement.netlify.app" // 앱으로 돌아올 주소
-        const loc = document.getElementById('locationInput').value || "경기장";
-        const opp = document.getElementById('opponentInput').value || "상대팀";
+        // 💡 디벨로퍼스에 등록된 안전한 주소로 고정!
+        const safeUrl = "https://24hd-announcement.netlify.app"; 
 
-        // 1번: 메인 매치 공지사항 (축구장 피드 카드)
         if (id === 'preview1') {
           Kakao.Share.sendDefault({
             objectType: 'feed',
             content: {
-              title: `⚽️ 24HD vs ${opp} 매치 공지`,
-              description: messageText, // 텍스트 100% 보존
-              imageUrl: '24Logo.png', // 고화질 야간 축구장
-              link: { mobileWebUrl: webUrl, webUrl: webUrl },
+              title: `⚽️ 24HD 매치 공지`,
+              // 글자가 너무 길면 카카오가 거부할 수 있어 적당히 자릅니다.
+              description: messageText.substring(0, 150) + "...\n(더보기 클릭)",
+              // 💡 카카오 공식 샘플 이미지 (차단당할 일 절대 없음)
+              imageUrl: 'https://mud-kage.kakao.com/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg',
+              link: { mobileWebUrl: safeUrl, webUrl: safeUrl },
             },
             buttons: [
               {
-                title: '🗺️ 경기장 길안내', // 누르면 카카오맵 자동 검색!
-                link: {
-                  mobileWebUrl: `https://map.kakao.com/link/search/${encodeURIComponent(loc)}`,
-                  webUrl: `https://map.kakao.com/link/search/${encodeURIComponent(loc)}`,
-                },
-              },
-              {
-                title: '📋 전체 공지 보기',
-                link: { mobileWebUrl: webUrl, webUrl: webUrl },
+                title: '📋 앱에서 전체 내용 보기',
+                // 외부 지도 링크 빼고 안전한 내 주소로 통일
+                link: { mobileWebUrl: safeUrl, webUrl: safeUrl },
               },
             ],
           });
         } 
-        // 2번: 정회원 방 갱신 및 회비 안내 (공지용 피드 카드)
         else if (id === 'regText3') {
           const currentSeason = seasonNames[currentSeasonIndex];
           Kakao.Share.sendDefault({
             objectType: 'feed',
             content: {
               title: `📢 ${currentSeason} 시즌 갱신 및 회비 안내`,
-              description: messageText,
-              imageUrl: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&q=80&w=800', // 서류/안내문 느낌의 깔끔한 사진
-              link: { mobileWebUrl: webUrl, webUrl: webUrl },
+              description: messageText.substring(0, 150) + "...",
+              imageUrl: 'https://mud-kage.kakao.com/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg',
+              link: { mobileWebUrl: safeUrl, webUrl: safeUrl },
             },
             buttons: [
               {
-                title: '📋 앱에서 전체 내용 확인',
-                link: { mobileWebUrl: webUrl, webUrl: webUrl },
+                title: '📋 전체 내용 확인하기',
+                link: { mobileWebUrl: safeUrl, webUrl: safeUrl },
               },
             ],
           });
         } 
-        // 3번: 나머지 (투표, 리마인드 등) -> 도배 방지를 위해 텍스트 전송
         else {
           Kakao.Share.sendDefault({
             objectType: 'text',
             text: messageText,
-            link: { mobileWebUrl: webUrl, webUrl: webUrl },
+            link: { mobileWebUrl: safeUrl, webUrl: safeUrl },
           });
         }
       }
-
       function switchMode(mode) {
         const generalFields = document.querySelectorAll('.general-only');
         const generateBtn = document.getElementById('generateBtnContainer');
