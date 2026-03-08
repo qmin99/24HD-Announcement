@@ -289,6 +289,7 @@
       );
       const days = ["일", "월", "화", "수", "목", "금", "토"];
 
+      // 👑 시즌 텍스트 자동화를 위한 변수들
       const seasonNames = ["12~1월", "2~3월", "4~5월", "6~7월", "8~9월", "10~11월"];
       let currentSeasonIndex = 0;
 
@@ -297,10 +298,11 @@
         renderHistory("24hd_locations", "locations");
         renderHistory("24hd_opponents", "opponents");
         
+        // 오늘 날짜 + 10일 후의 달(Month)을 계산해서 알아서 시즌을 맞춤!
         const targetDate = new Date();
         targetDate.setDate(targetDate.getDate() + 10);
         const m = targetDate.getMonth() + 1;
-        currentSeasonIndex = Math.floor((m % 12) / 2);
+        currentSeasonIndex = Math.floor((m % 12) / 2); // 12~1월은 0, 2~3월은 1...
 
         inputs.forEach((input) =>
           input.addEventListener("input", generateTextOnly),
@@ -316,7 +318,7 @@
         });
         
         generateTextOnly();
-        updateSeasonText();
+        updateSeasonText(); // 초기 시즌 텍스트 세팅
       }
 
       function setNextSaturday() {
@@ -365,16 +367,19 @@
         previews[1].innerText = `⚽️ ${month}/${date} ${dayName}요일 ${time} 경기(${loc})`;
         previews[2].innerText = `오늘 경기 ${time} ${loc}\n유니폼 ${homeEmoji}입니다.\n경기전 브리핑 위해서 30분전 ${briefStr}까지 도착 부탁드립니다!!`;
         
+        // 정회원 1번 멘트에 Weekly Message 자동 연동
         document.getElementById('regText1').innerText = `${customMessageInput.value}\n\n다음주 매치 빠른 예약 선점을 위해 투표 내일 밤까지 받겠습니다 되는 시간 전부 선택 부탁드립니다~~!!!`;
       }
 
+      // 👑 시즌 텍스트 업데이트 함수
       function updateSeasonText() {
         const currentSeason = seasonNames[currentSeasonIndex];
         document.getElementById('regText3').innerText = `${currentSeason} 정회원 여러분 반갑습니다!!\n\n모처럼 한가족이 되어 많이들 신청해 주셨습니다.\n처음 온 인원도 있는만큼 간단히 시스템 설명 드리겠습니다.\n\n1. 매주 경기 직후 다음 경기 예약을 위해 시간대 투표를 받을 예정입니다. 가장 많은 득표수의 날짜 시간대로 매치가 진행됩니다. 한 두표 차이로 결정되는 경우가 많습니다. 본인이 선택한 시간대의 불참은 특히 지양해주세요. \n\n2. 경기 직전, 정해진 포메이션에 맞춰 포지션 신청을 받습니다. 본인이 뛰고 싶은 포지션, 평소 안뛰던 포지션 상관 없이 자유롭게 신청해주세요.\n\n3. 전술에 대한 pre 브리핑이 간략하게 진행됩니다.  너무 무겁지 않게 공유할테니 경기 오시는분들은 꼭 읽고 숙지후 참석 부탁드립니다. \n\n이번 ${currentSeason} 통합 회비는 1만원 할인된 3만원, 정회원 아니신 분들은 기존대로 경기당 1만원 매치비를 받을 예정입니다.\n\n\n💰 회비 계좌 안내\n937702-00-378014 국민 양준혁\n30,000원 입금해주시면 됩니다!\n\n*회비는 독자적 계좌로 운용되며 구장비,음료비 제하고 남는 금액이 발생시 정도에 따라 건설적으로 활용 및 이월할 예정입니다!\n\n👉 입금 완료하신 분들은 이 메세지에 체크 표시 부탁드립니다`;
       }
 
+      // 👑 [다음] 버튼 눌렀을 때 실행되는 함수
       function nextSeason() {
-        currentSeasonIndex = (currentSeasonIndex + 1) % 6;
+        currentSeasonIndex = (currentSeasonIndex + 1) % 6; // 6개 시즌 무한 반복
         updateSeasonText();
       }
 
@@ -445,10 +450,9 @@
         });
       }
       
-      // 🚀 드디어 적용된 핵심 '피드 카드' 분기 로직
-     function sendToKakao(id) {
+      function sendToKakao(id) {
         if (!window.Kakao) {
-          alert("카카오 스크립트가 로드되지 않았습니다.");
+          alert("카카오 스크립트가 로드되지 않았습니다. 새로고침 후 다시 시도해주세요.");
           return;
         }
 
@@ -457,55 +461,17 @@
         }
 
         const messageText = document.getElementById(id).innerText;
-        // 💡 디벨로퍼스에 등록된 안전한 주소로 고정!
-        const safeUrl = "https://24hd-announcement.netlify.app"; 
 
-        if (id === 'preview1') {
-          Kakao.Share.sendDefault({
-            objectType: 'feed',
-            content: {
-              title: `⚽️ 24HD 매치 공지`,
-              // 글자가 너무 길면 카카오가 거부할 수 있어 적당히 자릅니다.
-              description: messageText.substring(0, 150) + "...\n(더보기 클릭)",
-              // 💡 카카오 공식 샘플 이미지 (차단당할 일 절대 없음)
-              imageUrl: 'https://mud-kage.kakao.com/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg',
-              link: { mobileWebUrl: safeUrl, webUrl: safeUrl },
-            },
-            buttons: [
-              {
-                title: '📋 앱에서 전체 내용 보기',
-                // 외부 지도 링크 빼고 안전한 내 주소로 통일
-                link: { mobileWebUrl: safeUrl, webUrl: safeUrl },
-              },
-            ],
-          });
-        } 
-        else if (id === 'regText3') {
-          const currentSeason = seasonNames[currentSeasonIndex];
-          Kakao.Share.sendDefault({
-            objectType: 'feed',
-            content: {
-              title: `📢 ${currentSeason} 시즌 갱신 및 회비 안내`,
-              description: messageText.substring(0, 150) + "...",
-              imageUrl: 'https://mud-kage.kakao.com/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg',
-              link: { mobileWebUrl: safeUrl, webUrl: safeUrl },
-            },
-            buttons: [
-              {
-                title: '📋 전체 내용 확인하기',
-                link: { mobileWebUrl: safeUrl, webUrl: safeUrl },
-              },
-            ],
-          });
-        } 
-        else {
-          Kakao.Share.sendDefault({
-            objectType: 'text',
-            text: messageText,
-            link: { mobileWebUrl: safeUrl, webUrl: safeUrl },
-          });
-        }
+        Kakao.Share.sendDefault({
+          objectType: "text",
+          text: messageText,
+          link: {
+            mobileWebUrl: window.location.href,
+            webUrl: window.location.href,
+          },
+        });
       }
+
       function switchMode(mode) {
         const generalFields = document.querySelectorAll('.general-only');
         const generateBtn = document.getElementById('generateBtnContainer');
